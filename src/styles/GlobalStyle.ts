@@ -28,13 +28,14 @@ export const GlobalStyle = createGlobalStyle`
   html,
   body {
     margin: 0;
-    paddding: 0;
+    padding: 0;
   }
   
   html,
   body,
   #root {
     height: 100%;
-    background-color: var(--clr-primary);
+    background-color: var(--clr-grey-bg);
+    min-height: 100%;
   }
 `;
