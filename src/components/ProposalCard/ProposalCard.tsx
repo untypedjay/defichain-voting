@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { getIssueData } from "../../api/github";
-import { formatTitle, getProposalLabel } from "../../utils/text";
+import { Proposal, ProposalType } from "../../types";
+import { formatTitle, getProposalId } from "../../utils/common";
+import { Avatar } from "../Avatar";
 
 interface Props {
-    children: any;
+    children: Proposal;
 }
 
-const StyledProposalCard = styled.section`
-  background-color: var(--clr-white);
-  border-radius: var(--br-card);
-  padding: 1.5em;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+const StyledProposalCard = styled.button`
+    text-align: left;
+    border: none;
+    background-color: var(--clr-white);
+    border-radius: var(--br-card);
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const StyledHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-`;
-
-const StyledAvatar = styled.img`
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
 `;
 
 const StyledHorizontalContainer = styled.div`
@@ -39,7 +36,7 @@ const StyledAuthor = styled.p`
 
 `;
 
-const StyledResult = styled.p<{ result: boolean }>`
+const StyledResult = styled.p<{ result: string }>`
     margin-bottom: 0;
     color: ${props => props.result ? 'var(--clr-green)' : 'var(--clr-red)'};
 `;
@@ -61,34 +58,25 @@ const StyledTitle = styled.h3`
 `;
 
 export default function ProposalCard({children}: Props) {
-    const [author, setAuthor] = useState<any>({ name: '...', avatarURL: 'https://avatars.githubusercontent.com/u/0' });
-
-    useEffect(() => {
-        const loadData = async () => {
-            const issueData = await getIssueData(children.number);
-            setAuthor({ name: issueData.user.login, avatarURL: issueData.user.avatar_url });
-        };
-
-        loadData();
-    }, []);
+    const navigate = useNavigate();
 
     return (
-        <StyledProposalCard>
+        <StyledProposalCard onClick={() => navigate(`/proposals/${getProposalId(children.title)}`)}>
             <StyledHeader>
                 <StyledHorizontalContainer>
-                    <StyledAvatar src={author.avatarURL} alt={author.name}></StyledAvatar>
-                    <StyledAuthor>{author.name}</StyledAuthor>
+                    <Avatar avatarURL={children.avatarURL} name={children.username} />
+                    <StyledAuthor>{children.username}</StyledAuthor>
                 </StyledHorizontalContainer>
-                <StyledText>{getProposalLabel(children.title)}</StyledText>
+                <StyledText>{`${children.type} ${getProposalId(children.title)}`}</StyledText>
             </StyledHeader>
             <StyledBody>
                 <div>
                     <StyledTitle>{formatTitle(children.title)}</StyledTitle>
-                    {children.type === 'cfp' && <StyledText>{children.dfiAmount} DFI</StyledText>}
+                    {children.type === ProposalType.CFP && <StyledText>{children.dfiAmount} DFI</StyledText>}
                 </div>
 
-                <StyledResult result={children.currentResult === 'Approved' ? true : false}>
-                    Currently {children.currentResult.toLowerCase()}
+                <StyledResult result={children.isApproved.toString()}>
+                    Currently {!children.isApproved && 'not'} approved
                 </StyledResult>
             </StyledBody>
         </StyledProposalCard>

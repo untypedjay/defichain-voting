@@ -5,6 +5,7 @@ export async function getVotingData(votingRound = 'latest') {
   if (response.status === 200) {
     return response.json();
   } else {
-    throw new Error(`An error occurred fetching data: ${response}`);
+    console.error(`Received the following status code: ${response.status}`);
+    return [];
   }
 }
