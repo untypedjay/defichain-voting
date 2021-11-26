@@ -25,6 +25,6 @@ export type VotingRound = {
 }
 
 export enum ProposalType {
-    CFP,
-    DFIP
+    CFP = 'CFP',
+    DFIP = 'DFIP'
 }

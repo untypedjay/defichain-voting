@@ -23,6 +23,7 @@ const StyledHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 `;
 
 const StyledHorizontalContainer = styled.div`
@@ -61,17 +62,17 @@ export default function ProposalCard({children}: Props) {
     const navigate = useNavigate();
 
     return (
-        <StyledProposalCard onClick={() => navigate(`/proposals/${getProposalId(children.title)}`)}>
+        <StyledProposalCard onClick={() => navigate(`/proposals/${children.proposalNr}`)}>
             <StyledHeader>
                 <StyledHorizontalContainer>
                     <Avatar avatarURL={children.avatarURL} name={children.username} />
                     <StyledAuthor>{children.username}</StyledAuthor>
                 </StyledHorizontalContainer>
-                <StyledText>{`${children.type} ${getProposalId(children.title)}`}</StyledText>
+                <StyledText>{`${children.type} ${children.proposalNr}`}</StyledText>
             </StyledHeader>
             <StyledBody>
                 <div>
-                    <StyledTitle>{formatTitle(children.title)}</StyledTitle>
+                    <StyledTitle>{children.title}</StyledTitle>
                     {children.type === ProposalType.CFP && <StyledText>{children.dfiAmount} DFI</StyledText>}
                 </div>
 
