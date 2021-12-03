@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { Proposal, ProposalType } from "../../types";
-import { formatTitle, getProposalId } from "../../utils/common";
 import { Avatar } from "../Avatar";
 
 interface Props {

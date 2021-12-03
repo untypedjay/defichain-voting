@@ -5,7 +5,7 @@ import useLocalStorage from "./useLocalStorage";
 import { Proposal, ProposalType, VotingRound } from "../types";
 import { formatTitle, getProposalId } from "../utils/common";
 
-export default function useProposals(votingRoundId: string = 'latest'): [Proposal[], boolean] {
+export default function useProposals(votingRoundId: string): [Proposal[], boolean] {
     const [isLoading, setIsLoading] = useState(true);
     const [votingRounds, setVotingRounds] = useLocalStorage('votingRounds', []);
     const [proposals, setProposals] = useState<Proposal[]>([]);
@@ -17,6 +17,7 @@ export default function useProposals(votingRoundId: string = 'latest'): [Proposa
             if (potentialVotingRound) {
                 setProposals(potentialVotingRound.proposals);
             } else {
+                console.log(votingRoundId)
                 const votingRoundData = await getVotingData(votingRoundId);
                 const proposalData: Proposal[] = await Promise.all(votingRoundData.map(async (proposalData: any) => {
                     const issueData = await getIssueData(proposalData.number);

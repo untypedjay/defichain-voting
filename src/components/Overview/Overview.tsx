@@ -13,7 +13,7 @@ const StyledTitle = styled.h1`
 
 export default function Overview() {
     const { votingRound } = useParams();
-    const [proposals, isLoading] = useProposals(votingRound);
+    const [proposals, isLoading] = useProposals(votingRound || '2111'); // TODO: get latest voting round dynamically
 
     const getTitle = () => {
         if (votingRound) {

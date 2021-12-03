@@ -1,5 +1,3 @@
-import { getVotingData } from "../api/dfx";
-
 export function formatTitle(input: string): string {
     return (removeParanthesis(removeLabel(input)));
 }
@@ -8,16 +6,16 @@ export function getProposalId(proposalTitle: string): string {
     const proposalLabel = getProposalLabel(proposalTitle);
     const indexOfLastWhitespace = proposalLabel.lastIndexOf(' ');
     if (indexOfLastWhitespace !== -1) {
+        console.log(proposalLabel.substring(indexOfLastWhitespace + 1))
         return proposalLabel.substring(indexOfLastWhitespace + 1);
     }
 
+    console.log(proposalLabel)
     return proposalLabel;
 }
 
-export async function getProposalData(proposalId: string | undefined) {
-    const proposals = await getVotingData(proposalId?.substring(0, 4));
-
-    return proposals.find((proposal: any) => proposal.title.indexOf(proposalId) !== -1);
+export function getVotingRoundId(proposalId: string): string {
+    return proposalId.substring(0, 4);
 }
 
 function getProposalLabel(proposalTitle: string): string {
